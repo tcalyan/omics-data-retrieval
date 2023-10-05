@@ -13,5 +13,5 @@ The aim of this project is to enable work on the gene omic data set using React 
 ## To Run Project
 Change your directory to back-end folder and run the command.
 ```
-docker-compose up --build
+docker-compose up --build -d
 ```
