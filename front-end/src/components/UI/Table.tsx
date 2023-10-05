@@ -28,6 +28,9 @@ import {
 import { Chart } from "react-chartjs-2";
 import { sendRequest } from "../../api/omics/fetchData";
 import { AxiosRequestConfig } from "axios";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
+import { TablePaginationActions } from "./TablePaginationAction";
 
 ChartJS.register(
   LinearScale,
@@ -168,7 +171,27 @@ function Row(props: { row: I_Omics }) {
 
 export default function CollapsibleTable(props: { data: I_Omics[] | null }) {
   const { data } = props;
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [tableData, setTableData] = React.useState(data?.slice(0, 5));
 
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+    setTableData(
+      data?.slice(newPage * rowsPerPage, (newPage + 1) * rowsPerPage)
+    );
+  };
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const rowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(rowsPerPage);
+    setTableData(data?.slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+    setPage(0);
+  };
   return (
     <>
       <TableContainer component={Paper}>
@@ -184,10 +207,30 @@ export default function CollapsibleTable(props: { data: I_Omics[] | null }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((row) => (
+            {tableData?.map((row) => (
               <Row key={row.id} row={row} />
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={4}
+                count={data ? data.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    "aria-label": "rows per page",
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
     </>
