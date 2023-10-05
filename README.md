@@ -15,3 +15,4 @@ Change your directory to back-end folder and run the command.
 ```
 docker-compose up --build
 ```
+React app serve on http://localhost:8080/
