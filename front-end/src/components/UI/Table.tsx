@@ -175,6 +175,11 @@ export default function CollapsibleTable(props: { data: I_Omics[] | null }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [tableData, setTableData] = React.useState(data?.slice(0, 5));
 
+  React.useEffect(() => {
+    // Update the count state when props.initialCount changes
+    setTableData(data?.slice(0, 5) ?? undefined);
+  }, [data]);
+
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number

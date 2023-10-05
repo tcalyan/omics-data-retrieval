@@ -13,7 +13,7 @@ export async function startHttpServer(app: express.Application): Promise<void> {
     })
   );
   console.log(__dirname);
-  // app.use(express.static(path.join(__dirname, "../../build")));
+  app.use(express.static(path.join(__dirname, "../../build")));
   app.get("/", (req: Request, res: Response) => {
     res.send("Hello, Omics Data Retrieval and Analysis System!");
   });
