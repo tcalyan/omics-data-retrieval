@@ -176,7 +176,6 @@ export default function CollapsibleTable(props: { data: I_Omics[] | null }) {
   const [tableData, setTableData] = React.useState(data?.slice(0, 5));
 
   React.useEffect(() => {
-    // Update the count state when props.initialCount changes
     setTableData(data?.slice(0, 5) ?? undefined);
   }, [data]);
 
